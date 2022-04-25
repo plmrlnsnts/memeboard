@@ -1,0 +1,11 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+#app {
+  height: 100%;
+}
+
+#react-refresh-overlay {
+  display: none;
+}
