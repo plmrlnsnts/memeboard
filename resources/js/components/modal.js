@@ -23,11 +23,9 @@ export default function Modal({
             className={`${width} relative my-8 inline-block transform overflow-hidden bg-white bg-black-noise bg-[length:700px] bg-center p-6 text-left align-middle shadow-xl`}
           >
             <div className="mb-6 flex items-center justify-between">
-              {title && (
-                <Dialog.Title as="h3" className="text-xl font-medium">
-                  {title}
-                </Dialog.Title>
-              )}
+              <Dialog.Title as="h3" className="text-xl font-medium">
+                {title}
+              </Dialog.Title>
               <button
                 onClick={onClose}
                 className="text-gray-700 focus:outline-none"

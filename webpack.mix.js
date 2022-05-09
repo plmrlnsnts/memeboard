@@ -20,7 +20,7 @@ mix.postCss('resources/css/app.css', 'public/css', [
 ])
 
 mix.alias({ '@': 'resources/js' })
-mix.disableSuccessNotifications()
+mix.disableNotifications()
 mix.sourceMaps()
 
 if (mix.inProduction()) {

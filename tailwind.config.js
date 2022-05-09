@@ -8,7 +8,7 @@ module.exports = {
     './resources/js/**/*.js',
   ],
 
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms')({ strategy: 'class' })],
 
   theme: {
     extend: {

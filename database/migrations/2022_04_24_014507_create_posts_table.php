@@ -14,12 +14,14 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('hashid')->nullable()->unique();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('type');
             $table->string('title');
             $table->integer('upvotes_count')->default(0);
             $table->integer('downvotes_count')->default(0);
             $table->integer('comments_count')->default(0);
+            $table->boolean('nsfw')->default(false);
             $table->timestamps();
         });
     }

@@ -7,8 +7,8 @@ export default function PostsList({ initialData, className }) {
   const { data: chunks, setSize } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (pageIndex === 0) return '/api/posts'
-      if (previousPageData && !previousPageData.next_cursor) return null
-      return `api/posts?cursor=${previousPageData.next_cursor}`
+      if (previousPageData && !previousPageData.meta.next_cursor) return null
+      return `api/posts?cursor=${previousPageData.meta.next_cursor}`
     },
     {
       fallbackData: initialData,
@@ -23,9 +23,9 @@ export default function PostsList({ initialData, className }) {
   )
 
   return (
-    <div className={`${className} space-y-12`}>
+    <div className={`${className} space-y-8`}>
       {chunks.map((posts, i) => (
-        <OnDemand key={i} className="space-y-12">
+        <OnDemand key={i} className="space-y-8">
           {posts.data.map((post) => (
             <Post key={post.id} post={post} />
           ))}
