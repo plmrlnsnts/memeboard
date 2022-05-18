@@ -11,12 +11,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
     protected $hidden = [
         'password',
         'remember_token',
@@ -25,4 +19,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = [
+        'photo_url',
+    ];
+
+    public function getPhotoUrlAttribute()
+    {
+        return sprintf(
+            'https://source.boringavatars.com/beam/120/%s?colors=%s',
+            urlencode($this->email),
+            'FFAD08,EDD75A,73B06F,0C8F8F,405059'
+        );
+    }
 }

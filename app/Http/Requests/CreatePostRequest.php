@@ -3,27 +3,17 @@
 namespace App\Http\Requests;
 
 use App\Models\Post;
+use App\Rules\AcceptedMimetypeRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreatePostRequest extends FormRequest
 {
-    public const ACCEPTED_MIMETYPES = [
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/gif',
-        'video/mp4',
-        'video/webm',
-        'video/quicktime',
-        'video/x-m4v',
-    ];
-
     public function rules()
     {
         return [
             'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:250',
-            'media' => ['required', 'mimetypes:'.implode(',', static::ACCEPTED_MIMETYPES)],
+            'title' => 'required|string|max:256',
+            'media' => ['required', new AcceptedMimetypeRule],
         ];
     }
 

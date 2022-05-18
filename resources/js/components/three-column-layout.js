@@ -16,10 +16,7 @@ export default function ThreeColumnLayout({ children }) {
           <div className="mr-6 flex-1">
             <div className="mx-auto max-w-2xl">{children}</div>
           </div>
-          <FeaturedPostsList
-            featuredPosts={page.props.featured_posts.data}
-            className="w-80 shrink-0"
-          />
+          <FeaturedPostsList className="w-80 shrink-0" />
         </div>
       </PageWrapper>
     </>

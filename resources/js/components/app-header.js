@@ -1,8 +1,9 @@
 import { Popover } from '@headlessui/react'
 import { Inertia } from '@inertiajs/inertia'
 import { Link, usePage } from '@inertiajs/inertia-react'
-import { useEffect, useState } from 'react'
-import { GoPlus } from 'react-icons/go'
+import { useContext, useEffect } from 'react'
+import { GoChevronDown, GoPlus } from 'react-icons/go'
+import AppContext from './app-context'
 import FancyButton from './fancy-button'
 import LoginForm from './login-form'
 import Modal from './modal'
@@ -10,18 +11,17 @@ import RegisterForm from './register-form'
 
 export default function AppHeader() {
   const page = usePage()
-  const [openLogin, toggleLogin] = useState(false)
-  const [openRegister, toggleRegister] = useState(false)
+  const context = useContext(AppContext)
 
   const handleAlreadyAMember = () => {
-    toggleRegister(false)
-    toggleLogin(true)
+    context.toggleRegisterModal(false)
+    context.toggleLoginModal(true)
   }
 
   useEffect(() => {
     return Inertia.on('success', () => {
-      toggleRegister(false)
-      toggleLogin(false)
+      context.toggleRegisterModal(false)
+      context.toggleLoginModal(false)
     })
   }, [])
 
@@ -53,14 +53,14 @@ export default function AppHeader() {
           <div className="flex items-center space-x-4">
             <button
               className="font-semibold"
-              onClick={() => toggleLogin(true)}
+              onClick={() => context.toggleLoginModal(true)}
               type="button"
             >
               Log In
             </button>
             <FancyButton
               className="px-3 py-1"
-              onClick={() => toggleRegister(true)}
+              onClick={() => context.toggleRegisterModal(true)}
               type="button"
             >
               Sign up
@@ -70,14 +70,17 @@ export default function AppHeader() {
       </header>
 
       <Modal
-        open={openLogin}
-        onClose={() => toggleLogin(false)}
+        open={context.openLoginModal}
+        onClose={() => context.toggleLoginModal(false)}
         title="Sign in to your account"
       >
         <LoginForm />
       </Modal>
 
-      <Modal open={openRegister} onClose={() => toggleRegister(false)}>
+      <Modal
+        open={context.openRegisterModal}
+        onClose={() => context.toggleRegisterModal(false)}
+      >
         <RegisterForm alreadyAMember={handleAlreadyAMember} />
       </Modal>
     </>

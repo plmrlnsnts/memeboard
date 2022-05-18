@@ -1,49 +1,28 @@
-import useScrollDirection from '@/hooks/scroll-direction'
+import useSticky from '@/hooks/sticky'
+import axios from 'axios'
 import { chunk } from 'lodash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import OnDemand from './on-demand'
 
-export default function FeaturedPostsList({ featuredPosts, className }) {
-  const ref = useRef()
-  const [heightOverflow, setHeightOverflow] = useState(0)
-  const [initialTopPosition, setInitialTopPosition] = useState(0)
-  const [marginTop, setMarginTop] = useState(0)
-  const [style, setStyle] = useState({})
-  const scrollDirection = useScrollDirection()
+export default function FeaturedPostsList({ className }) {
+  const [loading, setLoading] = useState(true)
+  const [featuredPosts, setFeaturedPosts] = useState([])
+  const { stickyRef, spacerRef, measureHeight } = useSticky()
 
   useEffect(() => {
-    setHeightOverflow(ref.current.offsetHeight - window.innerHeight)
-    setInitialTopPosition(ref.current.getBoundingClientRect().top)
-  }, [])
+    setLoading(true)
 
-  useEffect(() => {
-    setMarginTop((prevMargin) => {
-      if (window.scrollY === 0) return prevMargin
-
-      const { top, bottom } = ref.current.getBoundingClientRect()
-
-      if (scrollDirection === 'up' && bottom === window.innerHeight) {
-        return window.scrollY - heightOverflow - initialTopPosition
-      } else if (scrollDirection === 'down' && top === initialTopPosition) {
-        return window.scrollY
-      } else {
-        return prevMargin
-      }
+    axios.get(route('api.posts.featured')).then((res) => {
+      setFeaturedPosts(res.data.data)
+      setLoading(false)
+      measureHeight()
     })
-  }, [scrollDirection, heightOverflow, initialTopPosition])
-
-  useEffect(() => {
-    if (scrollDirection === 'down') {
-      setStyle({ top: heightOverflow * -1 })
-    } else {
-      setStyle({ bottom: (heightOverflow + initialTopPosition) * -1 })
-    }
-  }, [scrollDirection, heightOverflow, initialTopPosition])
+  }, [measureHeight])
 
   return (
     <div className={className}>
-      <div style={{ marginTop }}></div>
-      <div className="sticky" ref={ref} style={style}>
+      <div ref={spacerRef}></div>
+      <div className="sticky" ref={stickyRef}>
         <h6 className="font-semibold text-gray-400">Featured Posts</h6>
         <div className="mt-4 space-y-8 pb-8">
           {chunk(featuredPosts, 6).map((chunk, i) => (
@@ -61,6 +40,13 @@ export default function FeaturedPostsList({ featuredPosts, className }) {
               ))}
             </OnDemand>
           ))}
+          {loading &&
+            Array.from(Array(6).keys()).map((i) => (
+              <div key={i} className="border bg-white">
+                <div className="p-4 after:block after:h-4 after:rounded after:bg-gray-100"></div>
+                <div className="h-40 w-full bg-gray-100 object-cover"></div>
+              </div>
+            ))}
         </div>
       </div>
     </div>

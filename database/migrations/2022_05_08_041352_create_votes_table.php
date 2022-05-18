@@ -19,21 +19,7 @@ return new class extends Migration {
             $table->smallInteger('score');
             $table->timestamps();
 
-            $table->unique([
-                'user_id',
-                'voteable_id',
-                'voteable_type',
-            ]);
+            $table->unique(['user_id', 'voteable_id', 'voteable_type']);
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('votes');
     }
 };

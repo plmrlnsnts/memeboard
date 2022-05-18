@@ -16,23 +16,14 @@ return new class extends Migration {
             $table->id();
             $table->string('hashid')->nullable()->unique();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('type');
-            $table->string('title');
+            $table->string('title', 256);
             $table->integer('upvotes_count')->default(0);
             $table->integer('downvotes_count')->default(0);
-            $table->integer('comments_count')->default(0);
+            $table->integer('replies_count')->default(0);
             $table->boolean('nsfw')->default(false);
             $table->timestamps();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('posts');
     }
 };

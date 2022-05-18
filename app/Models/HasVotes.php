@@ -33,6 +33,8 @@ trait HasVotes
 
     public function unvote($user = null)
     {
+        $user ??= auth()->user();
+
         $this->votes()->where('user_id', $user->id)->delete();
     }
 }

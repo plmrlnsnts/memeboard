@@ -7,7 +7,7 @@ import { GoChevronDown, GoX } from 'react-icons/go'
 
 export default function CreatePost({ categories, accepted_media }) {
   const form = useForm({
-    category_id: categories[0].id,
+    category_id: categories.data[0].id,
     title: '',
     media: null,
   })
@@ -21,7 +21,7 @@ export default function CreatePost({ categories, accepted_media }) {
     <Layout>
       <form onSubmit={handleSubmit} className="mx-auto my-12 w-full max-w-3xl">
         <CategoriesListbox
-          categories={categories}
+          categories={categories.data}
           value={form.data.category_id}
           onChange={(value) => form.setData('category_id', value)}
         />

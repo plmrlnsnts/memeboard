@@ -1,8 +1,8 @@
 import useFluidDimensions from '@/hooks/fluid-dimensions'
 import useIntersectionObserver from '@/hooks/intersection-observer'
+import useVoteable from '@/hooks/voteable'
 import { formatDistanceToNow } from '@/lib/date'
 import { Popover } from '@headlessui/react'
-import axios from 'axios'
 import { useState } from 'react'
 import { CgMoreAlt } from 'react-icons/cg'
 import { GoArrowDown, GoArrowUp } from 'react-icons/go'
@@ -120,68 +120,43 @@ function SharePopover() {
 }
 
 function EngagementButtons({ post }) {
-  const [upvotesCount, setUpvotesCount] = useState(post.upvotes_count)
-  const [downvotesCount, setDownvotesCount] = useState(post.downvotes_count)
-  const [previousVote, setPreviousVote] = useState(post.personal_vote?.score)
-
-  const upvotePost = () => {
-    if (previousVote === 1) return unvotePost()
-    axios.post(route('api.posts.upvote', post))
-    setUpvotesCount((count) => count + 1)
-    setDownvotesCount((count) => (previousVote === -1 ? count - 1 : count))
-    setPreviousVote(1)
-  }
-
-  const downvotePost = () => {
-    if (previousVote === -1) return unvotePost()
-    axios.post(route('api.posts.downvote', post))
-    setDownvotesCount((count) => count + 1)
-    setUpvotesCount((count) => (previousVote === 1 ? count - 1 : count))
-    setPreviousVote(-1)
-  }
-
-  const unvotePost = () => {
-    axios.post(route('api.posts.unvote', post))
-    setUpvotesCount((count) => (previousVote === 1 ? count - 1 : count))
-    setDownvotesCount((count) => (previousVote === -1 ? count - 1 : count))
-    setPreviousVote(undefined)
-  }
+  const voteable = useVoteable(post)
 
   return (
     <div className="flex items-center divide-x">
       <button
         className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium"
-        onClick={upvotePost}
+        onClick={voteable.upvote}
         type="button"
       >
         <GoArrowUp
           className={[
             'mr-2 h-6 w-6',
-            previousVote === 1
+            voteable.currentVote === 1
               ? 'text-teal-500'
               : 'text-gray-500 group-hover:text-gray-700',
           ].join(' ')}
         />
-        <span>{upvotesCount}</span>
+        <span>{voteable.upvotesCount}</span>
       </button>
       <button
         className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium"
-        onClick={downvotePost}
+        onClick={voteable.downvote}
         type="button"
       >
         <GoArrowDown
           className={[
             'mr-2 h-6 w-6',
-            previousVote === -1
+            voteable.currentVote === -1
               ? 'text-teal-500'
               : 'text-gray-500 group-hover:text-gray-700',
           ].join(' ')}
         />
-        <span>{downvotesCount}</span>
+        <span>{voteable.downvotesCount}</span>
       </button>
       <button className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium">
         <IoChatboxEllipses className="mr-2 h-5 w-5 text-gray-500 group-hover:text-gray-700" />
-        <span>{post.comments_count}</span>
+        <span>{post.replies_count}</span>
       </button>
     </div>
   )

@@ -18,14 +18,4 @@ return new class extends Migration {
             $table->morphs('taggable');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('taggables');
-    }
 };

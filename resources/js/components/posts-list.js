@@ -3,12 +3,16 @@ import useSWRInfinite from 'swr/infinite'
 import OnDemand from './on-demand'
 import Post from './post'
 
-export default function PostsList({ initialData, className }) {
+export default function PostsList({
+  initialData = [],
+  className = '',
+  postsUrl = '/api/posts',
+}) {
   const { data: chunks, setSize } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (pageIndex === 0) return '/api/posts'
+      if (pageIndex === 0) return postsUrl
       if (previousPageData && !previousPageData.meta.next_cursor) return null
-      return `api/posts?cursor=${previousPageData.meta.next_cursor}`
+      return `${postsUrl}?cursor=${previousPageData.meta.next_cursor}`
     },
     {
       fallbackData: initialData,

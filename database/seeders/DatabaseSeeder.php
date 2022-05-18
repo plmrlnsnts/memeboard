@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create(['name' => 'Paul Santos', 'email' => 'paul@example.com']);
 
-        $this->call(PostsSeeder::class);
+        $this->call(PostsTableSeeder::class);
     }
 }

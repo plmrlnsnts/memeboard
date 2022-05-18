@@ -15,14 +15,20 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'upvotes_count' => $this->upvotes_count,
             'downvotes_count' => $this->downvotes_count,
-            'comments_count' => $this->comments_count,
+            'replies_count' => $this->replies_count,
             'nsfw' => $this->nsfw,
             'created_at' => $this->created_at,
             'category' => new CategoryResource($this->whenLoaded('category')),
-            'media' => MediaResource::collection($this->whenLoaded('media')),
             'personal_vote' => new VoteResource($this->whenLoaded('personalVote')),
+            'media' => MediaResource::collection($this->whenLoaded('media')),
+            'replies' => ReplyResource::collection($this->whenLoaded('replies')),
             'links' => [
                 'show' => route('posts.show', $this->hashid),
+                'comment' => route('posts.comments.create', $this->hashid),
+                'next' => route('api.posts.next', $this->id),
+                'upvote' => route('api.posts.upvote', $this->id),
+                'downvote' => route('api.posts.downvote', $this->id),
+                'unvote' => route('api.posts.unvote', $this->id),
             ],
         ];
     }

@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 const FancyButton = forwardRef(({ children, className, ...props }, ref) => {
   const styles = {
     primary: 'bg-teal-300 before:border-teal-700 text-black',
-    secondary: 'bg-gray-300 before:border-gray-400 text-black',
+    secondary: 'bg-emerald-300 before:border-emerald-700 text-black',
   }
 
   return (
