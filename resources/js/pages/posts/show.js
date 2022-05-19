@@ -104,7 +104,7 @@ function RepliesListItem({ reply }) {
   return (
     <div className="flex items-start">
       <img
-        src={reply.user.photo_url}
+        src={reply.user.profile_photo_url}
         alt={`${reply.user.name} avatar`}
         className="mr-6 h-10 w-10 rounded-full"
       />
