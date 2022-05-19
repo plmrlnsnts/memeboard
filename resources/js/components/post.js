@@ -2,6 +2,7 @@ import useFluidDimensions from '@/hooks/fluid-dimensions'
 import useIntersectionObserver from '@/hooks/intersection-observer'
 import useVoteable from '@/hooks/voteable'
 import { formatDistanceToNow } from '@/lib/date'
+import { classNames } from '@/utils'
 import { Popover } from '@headlessui/react'
 import { useState } from 'react'
 import { CgMoreAlt } from 'react-icons/cg'
@@ -17,9 +18,9 @@ import {
 export default function Post({ post }) {
   return (
     <article className="relative border bg-white">
-      <header className="space-y-2 p-6">
+      <header className="space-y-2 p-4 md:p-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 font-medium text-gray-700">
+          <div className="flex items-center space-x-2 text-sm font-medium text-gray-700 md:text-base">
             <span className="inline-flex items-center">
               <img
                 src={post.category.thumbnail}
@@ -71,7 +72,7 @@ function SettingsPopover() {
       >
         <CgMoreAlt className="h-6 w-6" />
       </Popover.Button>
-      <Popover.Panel className="absolute right-0 left-1/2 z-[5] w-40 -translate-x-1/2 border bg-white">
+      <Popover.Panel className="absolute right-0 z-[5] w-40 border bg-white lg:left-1/2 lg:-translate-x-1/2">
         <div className="py-1">
           <button className="block w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-100">
             Download
@@ -99,10 +100,10 @@ function SharePopover() {
         className="group flex items-center justify-center px-4 py-2 text-sm font-medium focus:outline-none"
         aria-label="share"
       >
-        <IoShareSocial className="mr-2 h-5 w-5 text-gray-500 group-hover:text-gray-700" />
-        <span className="flex-1">Share</span>
+        <IoShareSocial className="h-5 w-5 text-gray-500 group-hover:text-gray-700 md:mr-2" />
+        <span className="hidden flex-1 md:inline-flex">Share</span>
       </Popover.Button>
-      <Popover.Panel className="absolute bottom-full right-0 left-1/2 z-[5] mb-2 w-40 -translate-x-1/2 border bg-white">
+      <Popover.Panel className="absolute bottom-full right-0 z-[5] mb-2 w-40 border bg-white md:left-1/2 md:-translate-x-1/2">
         <div className="py-1">
           <button className="block w-full px-4 py-2 text-left text-sm font-medium hover:bg-gray-100">
             Copy Link
@@ -130,12 +131,12 @@ function EngagementButtons({ post }) {
         type="button"
       >
         <GoArrowUp
-          className={[
+          className={classNames(
             'mr-2 h-6 w-6',
             voteable.currentVote === 1
               ? 'text-teal-500'
-              : 'text-gray-500 group-hover:text-gray-700',
-          ].join(' ')}
+              : 'text-gray-500 group-hover:text-gray-700'
+          )}
         />
         <span>{voteable.upvotesCount}</span>
       </button>
@@ -145,12 +146,12 @@ function EngagementButtons({ post }) {
         type="button"
       >
         <GoArrowDown
-          className={[
+          className={classNames(
             'mr-2 h-6 w-6',
             voteable.currentVote === -1
               ? 'text-teal-500'
-              : 'text-gray-500 group-hover:text-gray-700',
-          ].join(' ')}
+              : 'text-gray-500 group-hover:text-gray-700'
+          )}
         />
         <span>{voteable.downvotesCount}</span>
       </button>
@@ -166,11 +167,11 @@ function ImageMedia({ post }) {
   return (
     <div className="flex justify-center">
       <img
+        alt={post.title}
+        height={post.media[0].height}
+        loading="lazy"
         src={post.media[0].url}
         width={post.media[0].width}
-        height={post.media[0].height}
-        alt={post.title}
-        loading="lazy"
       />
     </div>
   )

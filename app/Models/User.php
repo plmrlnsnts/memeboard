@@ -21,10 +21,10 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'photo_url',
+        'profile_photo_url',
     ];
 
-    public function getPhotoUrlAttribute()
+    public function getProfilePhotoUrlAttribute()
     {
         return sprintf(
             'https://source.boringavatars.com/beam/120/%s?colors=%s',

@@ -1,8 +1,18 @@
+import { classNames } from '@/utils'
+import { useState } from 'react'
 import NavLink from './nav-link'
 
-export default function CategoriesSidebar({ categories }) {
+export default function CategoriesSidebar({ categories, className }) {
+  const [showInMobile, toggleMobile] = useState(false)
+
   return (
-    <aside className="fixed inset-y-0 mt-14 w-80 space-y-6 overflow-hidden overflow-y-scroll overscroll-contain p-6">
+    <aside
+      className={classNames(
+        'fixed inset-y-0 space-y-6 overflow-hidden overflow-y-scroll overscroll-contain p-6 md:block',
+        showInMobile || 'hidden',
+        className
+      )}
+    >
       <div className="space-y-4">
         <NavLink active href="#hot">
           🌶 Hot

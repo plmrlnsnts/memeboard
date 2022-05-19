@@ -2,6 +2,7 @@ import AppContext from '@/components/app-context'
 import FancyButton from '@/components/fancy-button'
 import Post from '@/components/post'
 import PostsList from '@/components/posts-list'
+import Textarea from '@/components/textarea'
 import ThreeColumnLayout from '@/components/three-column-layout'
 import useManualScrollRestoration from '@/hooks/manual-scroll-restoration'
 import useVoteable from '@/hooks/voteable'
@@ -48,18 +49,18 @@ function ReplyForm({ post }) {
       {page.props.auth.user !== null ? (
         <form onSubmit={handleSubmit} className="flex items-start">
           <img
-            src={page.props.auth.user.photo_url}
+            src={page.props.auth.user.profile_photo_url}
             alt={`${page.props.auth.user.name} avatar`}
             className="mr-6 h-10 w-10 rounded-full"
           />
           <div className="flex-1">
-            <textarea
+            <Textarea
               className="block w-full border px-3 py-2 focus:outline-none"
-              onChange={(e) => form.setData('body', e.target.value)}
+              onChange={(value) => form.setData('body', value)}
               placeholder="Write a commment"
               rows="4"
               value={form.data.body}
-            ></textarea>
+            />
             <div className="mt-4 flex justify-end">
               <FancyButton type="submit" className="px-3 py-1">
                 Comment

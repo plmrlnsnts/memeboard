@@ -1,5 +1,7 @@
 import FancyButton from '@/components/fancy-button'
 import Layout from '@/components/layout'
+import Textarea from '@/components/textarea'
+import { classNames } from '@/utils'
 import { Listbox, Transition } from '@headlessui/react'
 import { useForm } from '@inertiajs/inertia-react'
 import { useEffect, useRef, useState } from 'react'
@@ -19,16 +21,22 @@ export default function CreatePost({ categories, accepted_media }) {
 
   return (
     <Layout>
-      <form onSubmit={handleSubmit} className="mx-auto my-12 w-full max-w-3xl">
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto my-6 w-full max-w-3xl px-6 md:my-12"
+      >
         <CategoriesListbox
           categories={categories.data}
           value={form.data.category_id}
           onChange={(value) => form.setData('category_id', value)}
         />
         <div className="mt-2">
-          <TitleTextarea
+          <Textarea
+            className="block w-full resize-none border-none px-0 text-2xl font-semibold focus:placeholder-gray-300 focus:outline-none md:text-3xl"
+            placeholder="Title of this post?"
             value={form.data.title}
             onChange={(value) => form.setData('title', value)}
+            rows="1"
           />
           <ErrorMessage error={form.errors.title} />
         </div>
@@ -74,7 +82,7 @@ function CategoriesListbox({ categories, value, onChange }) {
           alt={selected?.name}
           className="mr-2 h-5 w-5 rounded"
         />
-        <span className="mr-1">{selected?.name}</span>
+        <span className="mr-1 text-sm md:text-base">{selected?.name}</span>
         <GoChevronDown className="h-4 w-4 text-gray-500" />
       </Listbox.Button>
       <Listbox.Options className="absolute left-0 mt-2 max-h-80 w-56 -translate-x-2 overflow-y-auto border border-gray-500 bg-white focus:outline-none">
@@ -83,12 +91,10 @@ function CategoriesListbox({ categories, value, onChange }) {
             key={category.id}
             value={category}
             className={({ active }) =>
-              [
+              classNames(
                 'flex w-full items-center px-3 py-2',
-                active && 'bg-teal-500 text-white',
-              ]
-                .filter(Boolean)
-                .join(' ')
+                active && 'bg-teal-500 text-white'
+              )
             }
           >
             <img
@@ -102,24 +108,6 @@ function CategoriesListbox({ categories, value, onChange }) {
         ))}
       </Listbox.Options>
     </Listbox>
-  )
-}
-
-function TitleTextarea({ value, onChange }) {
-  const handleChange = (e) => {
-    e.target.style.height = 'auto'
-    e.target.style.height = `${e.target.scrollHeight}px`
-    onChange(e.target.value)
-  }
-
-  return (
-    <textarea
-      className="block w-full resize-none border-none px-0 text-3xl font-semibold focus:placeholder-gray-300 focus:outline-none"
-      placeholder="Title of this post?"
-      value={value}
-      onChange={handleChange}
-      rows="1"
-    ></textarea>
   )
 }
 
@@ -142,12 +130,12 @@ function MediaPicker({ onChange, accept = [] }) {
 
   return (
     <div
-      className={[
-        'flex h-[50vh] items-center justify-center overflow-hidden rounded',
+      className={classNames(
+        'flex items-center justify-center overflow-hidden rounded p-6 md:h-[500px]',
         filePreview
           ? 'border border-gray-400'
-          : 'border-2 border-dashed border-gray-300',
-      ].join(' ')}
+          : 'border-2 border-dashed border-gray-300'
+      )}
     >
       <input
         accept={accept.join(', ')}
@@ -157,9 +145,9 @@ function MediaPicker({ onChange, accept = [] }) {
         type="file"
       />
       {filePreview === '' && (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col justify-center md:items-center">
           <svg
-            className="h-24 w-24"
+            className="h-16 w-16 md:h-24 md:w-24"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -180,7 +168,7 @@ function MediaPicker({ onChange, accept = [] }) {
               d="M21.6642 17.2016C21.7024 16.8989 21.5962 16.5963 21.3805 16.3806L17.4143 12.4144C16.6332 11.6334 15.3669 11.6334 14.5858 12.4144L11.7072 15.2931C11.3166 15.6836 10.6835 15.6836 10.293 15.2931L9.41427 14.4144C8.63322 13.6334 7.36689 13.6334 6.58584 14.4144L2.93337 18.0669C2.68517 18.3151 2.57669 18.679 2.70674 19.005C3.24439 20.3529 4.45448 21.3303 5.94832 21.5485C7.54234 21.7813 9.66186 22 12.0001 22C14.3383 22 16.4578 21.7813 18.0518 21.5485C19.879 21.2816 21.2816 19.8789 21.5485 18.0517C21.5878 17.7828 21.6267 17.499 21.6642 17.2016Z"
             />
           </svg>
-          <p className="mt-4 text-lg font-medium text-gray-700">
+          <p className="mt-4 font-medium text-gray-700 md:text-center md:text-lg">
             Drag and drop an image or video, or{' '}
             <button
               onClick={() => fileRef.current.click()}
@@ -190,10 +178,10 @@ function MediaPicker({ onChange, accept = [] }) {
               Browse
             </button>
           </p>
-          <p className="mt-2 text-gray-500">
+          <p className="mt-2 text-gray-500 md:text-center">
             1600x1200 or higher recommended. Max 10MB (20MB for videos)
           </p>
-          <ul className="mt-12 grid list-inside list-disc grid-cols-2 gap-x-8 gap-y-2 text-gray-500">
+          <ul className="mt-8 grid list-inside list-disc gap-x-8 gap-y-2 text-gray-500 md:mt-12 md:grid-cols-2">
             <li>High resolution images (png, jpg, gif)</li>
             <li>Videos (mp4, 4:3, &lt;60secs)</li>
             <li>Animated gifs (4:3, 800x600 - 1600x1200)</li>

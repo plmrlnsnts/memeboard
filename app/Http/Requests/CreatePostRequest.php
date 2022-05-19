@@ -20,14 +20,10 @@ class CreatePostRequest extends FormRequest
     public function save(): Post
     {
         return tap(Post::create([
+            'user_id' => $this->user()->id,
             'category_id' => $this->category_id,
             'title' => $this->title,
-            'type' => $this->type(),
+            'type' => str($this->file('media')->getMimeType())->is('image*') ? 'photo' : 'animated',
         ]))->addMedia($this->file('media'));
-    }
-
-    protected function type()
-    {
-        return str($this->file('media')->getMimeType())->is('image*') ? 'photo' : 'animated';
     }
 }

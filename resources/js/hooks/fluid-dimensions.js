@@ -36,7 +36,7 @@ export default function useFluidDimensions(initialWidth, initialHeight) {
 
     setWidth(newWidth)
     setHeight(newHeight)
-  }, [])
+  }, [aspectRatio, width, height])
 
   return [ref, { width, height }]
 }

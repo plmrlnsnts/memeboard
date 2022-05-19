@@ -10,13 +10,16 @@ export default function ThreeColumnLayout({ children }) {
   return (
     <>
       <AppHeader />
-      <CategoriesSidebar categories={page.props.categories.data} />
-      <PageWrapper className="ml-80">
-        <div className="flex p-6">
-          <div className="mr-6 flex-1">
+      <CategoriesSidebar
+        className="mt-14 md:w-64 lg:w-72 xl:w-80"
+        categories={page.props.categories.data}
+      />
+      <PageWrapper className="md:ml-64 lg:ml-72 xl:ml-80">
+        <div className="flex p-4 md:p-6">
+          <div className="flex-1 xl:mr-6">
             <div className="mx-auto max-w-2xl">{children}</div>
           </div>
-          <FeaturedPostsList className="w-80 shrink-0" />
+          <FeaturedPostsList className="hidden w-80 shrink-0 xl:block" />
         </div>
       </PageWrapper>
     </>

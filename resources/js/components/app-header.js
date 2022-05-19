@@ -37,17 +37,16 @@ export default function AppHeader() {
           <span className="absolute h-full w-full bg-white-noise bg-[length:700px] bg-center"></span>
         </Link>
         {page.props.auth.user ? (
-          <div className="flex items-center space-x-4">
-            <AccountPopover user={page.props.auth.user} />
+          <div className="flex items-center space-x-6">
             <FancyButton
               className="px-3 py-1"
               onClick={() => Inertia.visit(route('posts.create'))}
-              color="secondary"
               type="button"
             >
               <span>Upload</span>
               <GoPlus className="ml-2 h-4 w-4" />
             </FancyButton>
+            <AccountPopover user={page.props.auth.user} />
           </div>
         ) : (
           <div className="flex items-center space-x-4">
@@ -92,11 +91,16 @@ function AccountPopover({ user }) {
     <Popover className="relative">
       <Popover.Button
         type="button"
-        className="flex items-center justify-center font-semibold"
+        className="flex items-center justify-center space-x-2 font-semibold"
         aria-label="account settings"
       >
-        <span className="mr-1">{user.name}</span>
-        <GoChevronDown className="h-4 w-4 text-gray-400" />
+        <img
+          className="h-8 w-8 rounded-full object-cover"
+          src={user.profile_photo_url}
+          alt="your profile photo"
+        />
+        <span className="hidden md:inline">{user.name}</span>
+        <GoChevronDown className="hidden h-4 w-4 text-gray-400 md:inline" />
       </Popover.Button>
       <Popover.Panel className="absolute right-0 mt-2 w-48 translate-x-2 border border-gray-400 bg-white">
         <div className="py-1">
