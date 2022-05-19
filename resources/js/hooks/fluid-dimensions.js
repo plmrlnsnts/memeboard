@@ -8,7 +8,8 @@ export default function useFluidDimensions(initialWidth, initialHeight) {
 
   useEffect(() => {
     const maxWidth = ref.current.offsetWidth
-    const maxHeight = (maxWidth * 9) / 16
+    const maxHeight =
+      window.innerWidth > 768 ? (maxWidth * 9) / 16 : maxWidth / aspectRatio
 
     let newWidth = width
     let newHeight = height

@@ -227,6 +227,8 @@ function VideoMedia({ post }) {
       <video
         loop
         poster={post.media[0].url}
+        playsInline
+        webkit-playsinline="true"
         preload="auto"
         ref={videoRef}
         style={{
