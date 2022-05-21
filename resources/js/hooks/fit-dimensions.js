@@ -1,17 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export default function useFluidDimensions(initialWidth, initialHeight) {
-  const ref = useRef()
-  const aspectRatio = initialWidth / initialHeight
-  const [width, setWidth] = useState(initialWidth)
-  const [height, setHeight] = useState(initialHeight)
+export default function useFitDimensions(ref, original) {
+  const [width, setWidth] = useState(original.width)
+  const [height, setHeight] = useState(original.height)
 
   useEffect(() => {
+    const aspectRatio = original.width / original.height
     const maxWidth = ref.current.offsetWidth
     const maxHeight = window.innerWidth > 768 ? 500 : 400
-
-    // const maxHeight =
-    //   window.innerWidth > 768 ? (maxWidth * 9) / 16 : maxWidth / aspectRatio
 
     let newWidth = width
     let newHeight = height
@@ -39,7 +35,7 @@ export default function useFluidDimensions(initialWidth, initialHeight) {
 
     setWidth(newWidth)
     setHeight(newHeight)
-  }, [aspectRatio, width, height])
+  }, [original.width, original.height, width, height])
 
-  return [ref, { width, height }]
+  return { width, height }
 }

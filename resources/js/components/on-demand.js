@@ -1,17 +1,20 @@
 import useIntersectionObserver from '@/hooks/intersection-observer'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function OnDemand({ children, ...props }) {
-  const [height, setHeight] = useState()
+  const containerRef = useRef()
+  const [minHeight, setMinHeight] = useState(0)
   const [visible, setVisible] = useState(true)
+  const entry = useIntersectionObserver(containerRef)
 
-  const containerRef = useIntersectionObserver(([entry]) => {
-    setHeight(containerRef.current.offsetHeight)
+  useEffect(() => {
+    if (entry === undefined) return
+    setMinHeight(containerRef.current.offsetHeight)
     setVisible(entry.isIntersecting)
-  })
+  }, [entry])
 
   return (
-    <div ref={containerRef} style={{ minHeight: `${height}px` }} {...props}>
+    <div ref={containerRef} style={{ minHeight }} {...props}>
       {visible && children}
     </div>
   )

@@ -1,10 +1,11 @@
-import useFluidDimensions from '@/hooks/fluid-dimensions'
+import useFitDimensions from '@/hooks/fit-dimensions'
 import useIntersectionObserver from '@/hooks/intersection-observer'
 import useVoteable from '@/hooks/voteable'
 import { formatDistanceToNow } from '@/lib/date'
 import { classNames } from '@/utils'
 import { Popover } from '@headlessui/react'
-import { useState } from 'react'
+import { Link } from '@inertiajs/inertia-react'
+import { useEffect, useRef, useState } from 'react'
 import { CgMoreAlt } from 'react-icons/cg'
 import { GoArrowDown, GoArrowUp } from 'react-icons/go'
 import {
@@ -38,14 +39,12 @@ export default function Post({ post }) {
             <SettingsPopover />
           </div>
         </div>
-        <a
+        <Link
           href={post.links.show}
           className="inline-block text-lg font-semibold leading-tight hover:text-teal-500 md:text-xl"
-          target="_blank"
-          rel="noreferrer"
         >
           {post.title}
-        </a>
+        </Link>
       </header>
       {post.type !== 'animated' ? (
         <ImageMedia post={post} />
@@ -178,19 +177,20 @@ function ImageMedia({ post }) {
 }
 
 function VideoMedia({ post }) {
-  const [containerRef, dimensions] = useFluidDimensions(
-    post.media[0].width,
-    post.media[0].height
-  )
+  const media = post.media[0]
+  const containerRef = useRef()
+  const videoRef = useRef()
 
-  const videoRef = useIntersectionObserver(
-    ([entry]) => toggleVideo(entry.isIntersecting),
-    { threshold: 0.5 }
-  )
+  const { width, height } = useFitDimensions(containerRef, media)
+  const entry = useIntersectionObserver(videoRef, { threshold: 0.5 })
+
+  useEffect(() => {
+    if (entry === undefined) return
+    toggleVideo(entry.isIntersecting)
+  }, [entry])
 
   const [isPlaying, setPlaying] = useState(false)
   const [isMuted, setMuted] = useState(false)
-  const hasAudio = post.media[0].has_audio
 
   const toggleVideo = (shouldPlay) => {
     if (shouldPlay && videoRef.current.paused) {
@@ -210,7 +210,7 @@ function VideoMedia({ post }) {
   }
 
   const handleContainerClick = () => {
-    if (hasAudio) {
+    if (media.has_audio) {
       toggleVolume(isMuted)
     } else {
       toggleVideo(!isPlaying)
@@ -230,16 +230,13 @@ function VideoMedia({ post }) {
         preload="auto"
         ref={videoRef}
         webkit-playsinline="true"
-        style={{
-          width: `${dimensions.width}px`,
-          height: `${dimensions.height}px`,
-        }}
+        style={{ width, height }}
       >
         <source src={post.media[0].url} type="video/mp4" />
       </video>
-      {!isPlaying && !hasAudio && <VideMediaGifIndicator />}
-      {!isPlaying && hasAudio && <VideoMediaPlayIndicator />}
-      {hasAudio && <VideoMediaVolumeIndicator isMuted={isMuted} />}
+      {!isPlaying && !media.has_audio && <VideMediaGifIndicator />}
+      {!isPlaying && media.has_audio && <VideoMediaPlayIndicator />}
+      {media.has_audio && <VideoMediaVolumeIndicator isMuted={isMuted} />}
     </div>
   )
 }

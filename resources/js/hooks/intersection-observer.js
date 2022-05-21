@@ -1,14 +1,14 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
-export default function useIntersectionObserver(handler, options = {}) {
-  const ref = useRef()
+export default function useIntersectionObserver(ref, options = {}) {
+  const [entry, setEntry] = useState()
 
   useEffect(() => {
-    const elements = ref.current instanceof Array ? ref.current : [ref.current]
+    const handler = ([entry]) => setEntry(entry)
     const observer = new IntersectionObserver(handler, options)
-    elements.filter(Boolean).forEach((el) => observer.observe(el))
+    observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
 
-  return ref
+  return entry
 }
