@@ -178,11 +178,9 @@ function ImageMedia({ post }) {
 }
 
 function VideoMedia({ post }) {
-  const hasAudio = post.media[1].has_audio
-
   const [containerRef, dimensions] = useFluidDimensions(
-    post.media[1].width,
-    post.media[1].height
+    post.media[0].width,
+    post.media[0].height
   )
 
   const videoRef = useIntersectionObserver(
@@ -192,6 +190,7 @@ function VideoMedia({ post }) {
 
   const [isPlaying, setPlaying] = useState(false)
   const [isMuted, setMuted] = useState(false)
+  const hasAudio = post.media[0].has_audio
 
   const toggleVideo = (shouldPlay) => {
     if (shouldPlay && videoRef.current.paused) {
@@ -226,17 +225,17 @@ function VideoMedia({ post }) {
     >
       <video
         loop
-        poster={post.media[0].url}
         playsInline
-        webkit-playsinline="true"
+        poster={post.media[0].poster}
         preload="auto"
         ref={videoRef}
+        webkit-playsinline="true"
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
         }}
       >
-        <source src={post.media[1].url} type="video/mp4" />
+        <source src={post.media[0].url} type="video/mp4" />
       </video>
       {!isPlaying && !hasAudio && <VideMediaGifIndicator />}
       {!isPlaying && hasAudio && <VideoMediaPlayIndicator />}

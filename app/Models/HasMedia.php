@@ -4,11 +4,12 @@ namespace App\Models;
 
 use CloudinaryLabs\CloudinaryLaravel\CloudinaryEngine;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Http\UploadedFile;
 
 trait HasMedia
 {
-    public function media()
+    public function media(): MorphMany
     {
         return $this->morphMany(Media::class, 'model');
     }

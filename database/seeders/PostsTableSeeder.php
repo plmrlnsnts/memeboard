@@ -45,23 +45,20 @@ class PostsTableSeeder extends Seeder
                 ->pluck('id')
         );
 
-        $post->media()->create([
+        $post->media()->create($post->type !== 'animated' ? [
             'type' => 'image',
             'width' => data_get($input, 'images.image460.width'),
             'height' => data_get($input, 'images.image460.height'),
             'url' => data_get($input, 'images.image460.url'),
+        ] : [
+            'type' => 'video',
+            'width' => data_get($input, 'images.image460sv.width'),
+            'height' => data_get($input, 'images.image460sv.height'),
+            'url' => data_get($input, 'images.image460sv.url'),
+            'poster' => data_get($input, 'images.image460.url'),
+            'has_audio' => data_get($input, 'images.image460sv.hasAudio'),
+            'duration' => data_get($input, 'images.image460sv.duration'),
         ]);
-
-        if ($post->type === 'animated') {
-            $post->media()->create([
-                'type' => 'video',
-                'width' => data_get($input, 'images.image460sv.width'),
-                'height' => data_get($input, 'images.image460sv.height'),
-                'url' => data_get($input, 'images.image460sv.url'),
-                'has_audio' => data_get($input, 'images.image460sv.hasAudio'),
-                'duration' => data_get($input, 'images.image460sv.duration'),
-            ]);
-        }
 
         return $post;
     }

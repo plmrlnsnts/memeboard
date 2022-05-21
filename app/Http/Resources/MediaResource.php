@@ -14,6 +14,7 @@ class MediaResource extends JsonResource
             'width' => $this->width,
             'height' => $this->height,
             'type' => $this->type,
+            'poster' => $this->poster,
             'has_audio' => $this->has_audio,
             'duration' => $this->duration,
         ];

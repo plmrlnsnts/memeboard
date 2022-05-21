@@ -31,7 +31,7 @@ export default function FeaturedPostsList({ className }) {
                 <article key={post.id} className="border bg-white">
                   <h1 className="p-4 text-sm font-medium">{post.title}</h1>
                   <img
-                    src={post.media[0].url}
+                    src={post.media[0].poster || post.media[0].url}
                     className="h-40 w-full object-cover"
                     alt={post.title}
                     loading="lazy"

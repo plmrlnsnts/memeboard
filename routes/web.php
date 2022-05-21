@@ -1,13 +1,15 @@
 <?php
 
 use App\Http\Requests\CreateCommentRequest;
+use App\Http\Requests\CreateMediaRequest;
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\MediaResource;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
+use App\Models\Media;
 use App\Models\Post;
 use App\Models\Reply;
-use App\Rules\AcceptedMimetypeRule;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -74,9 +76,15 @@ Route::delete('/api/replies/{reply}/unvote', fn (Reply $reply) => (
     ->middleware(['auth', 'verified'])
     ->name('api.replies.unvote');
 
+Route::post('/api/media', fn (CreateMediaRequest $request) => (
+    new MediaResource($request->save())
+))
+    ->middleware(['auth', 'verified'])
+    ->name('api.media.upload');
+
 Route::get('/posts/new', fn () => inertia('posts/create', [
     'categories' => CategoryResource::collection(Category::all()),
-    'accepted_media' => AcceptedMimetypeRule::MIMETYPES,
+    'accepted_media' => Media::ACCEPTED_MIMETYPES,
 ]))
     ->middleware(['auth', 'verified'])
     ->name('posts.create');

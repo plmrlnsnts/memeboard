@@ -1,18 +1,27 @@
 import FancyButton from '@/components/fancy-button'
 import Layout from '@/components/layout'
 import Textarea from '@/components/textarea'
+import useUpload from '@/hooks/upload'
 import { classNames } from '@/utils'
 import { Listbox, Transition } from '@headlessui/react'
 import { useForm } from '@inertiajs/inertia-react'
 import { useEffect, useRef, useState } from 'react'
+import { CgSpinner } from 'react-icons/cg'
 import { GoChevronDown, GoX } from 'react-icons/go'
 
 export default function CreatePost({ categories, accepted_media }) {
+  const uploader = useUpload()
+
   const form = useForm({
     category_id: categories.data[0].id,
+    media_ids: [],
     title: '',
-    media: null,
   })
+
+  const handleMediaChange = async (file) => {
+    const media = await uploader.upload(file)
+    form.setData('media_ids', [media.id])
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -34,6 +43,7 @@ export default function CreatePost({ categories, accepted_media }) {
           <Textarea
             className="block w-full resize-none border-none px-0 text-2xl font-semibold focus:placeholder-gray-300 focus:outline-none md:text-3xl"
             placeholder="Title of this post?"
+            name="title"
             value={form.data.title}
             onChange={(value) => form.setData('title', value)}
             rows="1"
@@ -43,12 +53,16 @@ export default function CreatePost({ categories, accepted_media }) {
         <div className="mt-4">
           <MediaPicker
             accept={accepted_media}
-            onChange={(value) => form.setData('media', value)}
+            onChange={handleMediaChange}
+            processing={uploader.processing}
           />
-          <ErrorMessage error={form.errors.media} />
+          <ErrorMessage error={form.errors.media_ids} />
         </div>
         <div className="mt-4 flex justify-end">
-          <FancyButton className="px-3 py-2" disabled={form.processing}>
+          <FancyButton
+            className="px-3 py-2"
+            disabled={form.processing || uploader.processing}
+          >
             Submit post
           </FancyButton>
         </div>
@@ -111,7 +125,7 @@ function CategoriesListbox({ categories, value, onChange }) {
   )
 }
 
-function MediaPicker({ onChange, accept = [] }) {
+function MediaPicker({ onChange, accept = [], processing }) {
   const fileRef = useRef()
   const [filePreview, setFilePreview] = useState('')
   const [fileType, setFileType] = useState('image')
@@ -131,7 +145,7 @@ function MediaPicker({ onChange, accept = [] }) {
   return (
     <div
       className={classNames(
-        'flex items-center justify-center overflow-hidden rounded p-6 md:h-[500px]',
+        'relative flex items-center justify-center overflow-hidden rounded p-6 md:h-[500px]',
         filePreview
           ? 'border border-gray-400'
           : 'border-2 border-dashed border-gray-300'
@@ -144,6 +158,9 @@ function MediaPicker({ onChange, accept = [] }) {
         ref={fileRef}
         type="file"
       />
+      {processing && (
+        <CgSpinner className="absolute top-2 left-2 h-6 w-6 animate-spin text-teal-500" />
+      )}
       {filePreview === '' && (
         <div className="flex flex-col justify-center md:items-center">
           <svg
@@ -198,7 +215,7 @@ function MediaPicker({ onChange, accept = [] }) {
       >
         <button
           type="button"
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-black text-white ring-4 ring-gray-700/50"
+          className="absolute top-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-black text-white ring-4 ring-gray-700/50"
           onClick={() => handleResetButtonClick()}
         >
           <GoX className="h-5 w-5" />
@@ -209,7 +226,12 @@ function MediaPicker({ onChange, accept = [] }) {
             src={filePreview}
           />
         ) : (
-          <video className="h-auto w-full" controls>
+          <video
+            className="h-auto w-full"
+            controls
+            playsInline
+            webkit-playsinline="true"
+          >
             <source src={filePreview}></source>
           </video>
         )}
