@@ -17,7 +17,7 @@ import {
 
 export default function Post({ post }) {
   return (
-    <article className="relative border bg-white">
+    <article className="relative border-y bg-white md:border">
       <header className="space-y-2 p-4 md:p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 text-sm font-medium text-gray-700 md:text-base">
@@ -40,7 +40,7 @@ export default function Post({ post }) {
         </div>
         <a
           href={post.links.show}
-          className="inline-block text-xl font-semibold leading-tight hover:text-teal-500"
+          className="inline-block text-lg font-semibold leading-tight hover:text-teal-500 md:text-xl"
           target="_blank"
           rel="noreferrer"
         >
@@ -52,7 +52,7 @@ export default function Post({ post }) {
       ) : (
         <VideoMedia post={post} />
       )}
-      <div className="mt-6 flex items-center justify-between">
+      <div className="flex items-center justify-between md:mt-6">
         <EngagementButtons post={post} />
         <div>
           <SharePopover />
@@ -124,9 +124,9 @@ function EngagementButtons({ post }) {
   const voteable = useVoteable(post)
 
   return (
-    <div className="flex items-center divide-x">
+    <div className="flex flex-1 items-center divide-x md:flex-none">
       <button
-        className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium"
+        className="group flex w-full items-center justify-center px-4 py-2 text-sm font-medium md:w-24"
         onClick={voteable.upvote}
         type="button"
       >
@@ -141,7 +141,7 @@ function EngagementButtons({ post }) {
         <span>{voteable.upvotesCount}</span>
       </button>
       <button
-        className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium"
+        className="group flex w-full items-center justify-center px-4 py-2 text-sm font-medium md:w-24"
         onClick={voteable.downvote}
         type="button"
       >
@@ -155,7 +155,7 @@ function EngagementButtons({ post }) {
         />
         <span>{voteable.downvotesCount}</span>
       </button>
-      <button className="group flex w-24 items-center justify-center px-4 py-2 text-sm font-medium">
+      <button className="group flex w-full items-center justify-center px-4 py-2 text-sm font-medium md:w-24">
         <IoChatboxEllipses className="mr-2 h-5 w-5 text-gray-500 group-hover:text-gray-700" />
         <span>{post.replies_count}</span>
       </button>

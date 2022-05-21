@@ -1,10 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export default function useIntersectionObserver(
-  handler,
-  options = {},
-  deps = []
-) {
+export default function useIntersectionObserver(handler, options = {}) {
   const ref = useRef()
 
   useEffect(() => {
@@ -12,7 +8,7 @@ export default function useIntersectionObserver(
     const observer = new IntersectionObserver(handler, options)
     elements.filter(Boolean).forEach((el) => observer.observe(el))
     return () => observer.disconnect()
-  }, deps)
+  }, [])
 
   return ref
 }

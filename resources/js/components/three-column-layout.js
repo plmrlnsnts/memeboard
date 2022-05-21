@@ -15,7 +15,7 @@ export default function ThreeColumnLayout({ children }) {
         categories={page.props.categories.data}
       />
       <PageWrapper className="md:ml-64 lg:ml-72 xl:ml-80">
-        <div className="flex p-4 md:p-6">
+        <div className="flex px-0 py-4 md:px-6 md:py-6">
           <div className="flex-1 xl:mr-6">
             <div className="mx-auto max-w-2xl">{children}</div>
           </div>

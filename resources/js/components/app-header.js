@@ -27,7 +27,7 @@ export default function AppHeader() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 flex h-14 items-center justify-between border-b bg-white px-6">
+      <header className="fixed inset-x-0 top-0 z-10 flex h-14 items-center justify-between border-b bg-white px-4 md:px-6">
         <Link
           href={route('home')}
           className="relative flex items-center self-stretch font-headline text-2xl font-extrabold tracking-tighter"

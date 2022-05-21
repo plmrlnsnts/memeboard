@@ -1,35 +1,29 @@
 import useIntersectionObserver from '@/hooks/intersection-observer'
-import useSWRInfinite from 'swr/infinite'
+import axios from 'axios'
+import { useState } from 'react'
 import OnDemand from './on-demand'
 import Post from './post'
 
-export default function PostsList({
-  initialData = [],
-  className = '',
-  postsUrl = '/api/posts',
-}) {
-  const { data: chunks, setSize } = useSWRInfinite(
-    (pageIndex, previousPageData) => {
-      if (pageIndex === 0) return postsUrl
-      if (previousPageData && !previousPageData.meta.next_cursor) return null
-      return `${postsUrl}?cursor=${previousPageData.meta.next_cursor}`
-    },
-    {
-      fallbackData: initialData,
-      revalidateOnMount: false,
-      revalidateFirstPage: false,
-    }
-  )
+export default function PostsList({ initialData = [], className = '' }) {
+  const [chunks, setChunks] = useState(initialData)
+  const [nextLink, setNextLink] = useState(initialData[0].links.next)
+
+  const loadMore = () => {
+    axios.get(nextLink).then((res) => {
+      setChunks((oldChunks) => [...oldChunks, res.data])
+      setNextLink(res.data.links.next)
+    })
+  }
 
   const loaderRef = useIntersectionObserver(
-    ([entry]) => entry.isIntersecting && setSize((size) => size + 1),
+    ([entry]) => entry.isIntersecting && loadMore(),
     { rootMargin: '50% 0px' }
   )
 
   return (
-    <div className={`${className} space-y-8`}>
+    <div className={`${className} space-y-4 md:space-y-8`}>
       {chunks.map((posts, i) => (
-        <OnDemand key={i} className="space-y-8">
+        <OnDemand key={i} className="space-y-4 md:space-y-8">
           {posts.data.map((post) => (
             <Post key={post.id} post={post} />
           ))}
@@ -37,9 +31,7 @@ export default function PostsList({
       ))}
 
       <div className="text-center text-sm font-medium" ref={loaderRef}>
-        {chunks[chunks.length - 1].next_cursor === null
-          ? "That's all folks."
-          : 'Loading...'}
+        {nextLink === null ? "That's all folks." : 'Loading...'}
       </div>
     </div>
   )

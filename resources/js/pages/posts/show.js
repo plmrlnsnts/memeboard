@@ -17,16 +17,18 @@ export default function ShowPost({ post, next_posts }) {
   return (
     <ThreeColumnLayout>
       <Post post={post.data} />
-      <h3 className="mt-8 text-lg font-semibold">Replies</h3>
-      <ReplyForm post={post.data} />
-      <RepliesList className="mt-8" post={post.data} />
+      <section className="px-4 md:px-0">
+        <h3 className="mt-8 text-lg font-semibold">
+          {post.data.replies.length} Replies
+        </h3>
+        <ReplyForm post={post.data} />
+        <RepliesList className="mt-8" post={post.data} />
+      </section>
       <hr className="mt-8 border-dashed" />
-      <h3 className="mt-8 text-lg font-semibold">More posts from Memeboard</h3>
-      <PostsList
-        className="mt-4"
-        initialData={[next_posts]}
-        postsUrl={post.data.links.next}
-      />
+      <h3 className="mt-8 px-4 text-lg font-semibold md:px-0">
+        More posts from Memeboard
+      </h3>
+      <PostsList className="mt-4" initialData={[next_posts]} />
     </ThreeColumnLayout>
   )
 }
@@ -51,7 +53,7 @@ function ReplyForm({ post }) {
           <img
             src={page.props.auth.user.profile_photo_url}
             alt={`${page.props.auth.user.name} avatar`}
-            className="mr-6 h-10 w-10 rounded-full"
+            className="mr-4 h-8 w-8 rounded-full md:mr-6 md:h-10 md:w-10"
           />
           <div className="flex-1">
             <Textarea
@@ -106,7 +108,7 @@ function RepliesListItem({ reply }) {
       <img
         src={reply.user.profile_photo_url}
         alt={`${reply.user.name} avatar`}
-        className="mr-6 h-10 w-10 rounded-full"
+        className="mr-4 h-8 w-8 rounded-full md:mr-6 md:h-10 md:w-10"
       />
       <div className="flex-1">
         <div className="flex items-center space-x-2">

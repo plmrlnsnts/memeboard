@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\CursorPaginator;
 use Vinkla\Hashids\Facades\Hashids;
 
 class Post extends Model
@@ -45,7 +46,7 @@ class Post extends Model
             ->with(['category', 'media']);
     }
 
-    public static function stream($offset = null)
+    public static function stream($offset = null): CursorPaginator
     {
         return static::query()
             ->when(auth()->check(), fn ($q) => $q->with('personalVote'))

@@ -25,12 +25,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => inertia('welcome', [
     'categories' => CategoryResource::collection(Category::all()),
-    'posts' => PostResource::collection(Post::stream()),
+    'posts' => PostResource::collection(Post::stream()->withPath(route('api.posts.index'))),
 ]))->name('home');
 
 Route::get('/api/posts', fn () => (
     PostResource::collection(Post::stream())
-))->name('api.posts');
+))->name('api.posts.index');
 
 Route::get('/api/posts/featured', fn () => (
     PostResource::collection(Post::featured())
@@ -95,7 +95,7 @@ Route::post('/posts', fn (CreatePostRequest $request) => (
 
 Route::get('/posts/{post:hashid}', fn (Post $post) => inertia('posts/show', [
     'categories' => CategoryResource::collection(Category::all()),
-    'next_posts' => PostResource::collection(Post::stream($post->id)),
+    'next_posts' => PostResource::collection(Post::stream($post->id)->withPath(route('api.posts.next', $post))),
     'post' => new PostResource($post),
 ]))->name('posts.show');
 
