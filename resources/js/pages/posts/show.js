@@ -59,30 +59,48 @@ function ReplyForm({ post }) {
             <Textarea
               className="block w-full border px-3 py-2 focus:outline-none"
               onChange={(value) => form.setData('body', value)}
-              placeholder="Write a commment"
+              placeholder="Leave a commment"
+              name="reply"
               rows="4"
               value={form.data.body}
             />
             <div className="mt-4 flex justify-end">
               <FancyButton type="submit" className="px-3 py-1">
-                Comment
+                Reply
               </FancyButton>
             </div>
           </div>
         </form>
       ) : (
-        <div className="flex items-center justify-between border p-6">
-          <div className="flex-1">
-            <h2 className="text-lg font-semibold">Join the discussion</h2>
-            <p className="text-gray-700">
-              Looking to share your feedback and join on the conversation?
-            </p>
+        <div className="flex flex-col items-center justify-between p-6">
+          <div className="flex items-center -space-x-2">
+            <img
+              className="h-10 w-10 rounded-full border-2 border-white"
+              src="https://source.boringavatars.com/beam/120/steve"
+              alt="steve"
+            />
+            <img
+              className="h-10 w-10 rounded-full border-2 border-white"
+              src="https://source.boringavatars.com/beam/120/tony"
+              alt="tony"
+            />
+            <img
+              className="h-10 w-10 rounded-full border-2 border-white"
+              src="https://source.boringavatars.com/beam/120/bruce"
+              alt="bruce"
+            />
           </div>
+          <h2 className="mt-4 text-center text-lg font-semibold">
+            Join the discussion
+          </h2>
+          <p className="mt-2 max-w-[260px] text-center text-gray-700">
+            Looking to share your feedback and join in on the conversation?
+          </p>
           <FancyButton
-            className="px-3 py-2"
+            className="mt-6 px-3 py-2"
             onClick={() => toggleRegisterModal(true)}
           >
-            Sign up
+            Sign up to Memeboard
           </FancyButton>
         </div>
       )}
