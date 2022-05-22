@@ -11,13 +11,15 @@ class Reply extends Model
 
     public static function booted()
     {
-        static::created(fn (Reply $reply) => $reply->post->update([
-            'replies_count' => $reply->post->replies()->count(),
-        ]));
+        static::created(function (self $reply) {
+            $reply->post->update(['replies_count' => $reply->post->replies()->count()]);
+            $reply->parent?->update(['replies_count' => $reply->parent->replies()->count()]);
+        });
 
-        static::deleted(fn (Reply $reply) => $reply->post->update([
-            'replies_count' => $reply->post->replies()->count(),
-        ]));
+        static::deleted(function (self $reply) {
+            $reply->post->update(['replies_count' => $reply->post->replies()->count()]);
+            $reply->parent?->update(['replies_count' => $reply->parent->replies()->count()]);
+        });
     }
 
     public function user()
@@ -28,5 +30,15 @@ class Reply extends Model
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(static::class);
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(static::class, 'parent_id');
     }
 }

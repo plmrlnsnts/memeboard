@@ -2,7 +2,6 @@ import AppContext from '@/components/app-context'
 import FancyButton from '@/components/fancy-button'
 import Post from '@/components/post'
 import PostsList from '@/components/posts-list'
-import Textarea from '@/components/textarea'
 import ThreeColumnLayout from '@/components/three-column-layout'
 import useManualScrollRestoration from '@/hooks/manual-scroll-restoration'
 import useVoteable from '@/hooks/voteable'
@@ -40,7 +39,7 @@ function ReplyForm({ post }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    form.post(post.links.comment, {
+    form.post(post.links.reply, {
       preserveScroll: true,
       preserveState: false,
     })
@@ -49,29 +48,39 @@ function ReplyForm({ post }) {
   return (
     <div className="mt-4">
       {page.props.auth.user !== null ? (
-        <form onSubmit={handleSubmit} className="flex items-start">
+        <div className="flex items-center space-x-4 md:space-x-6">
           <img
             src={page.props.auth.user.profile_photo_url}
             alt={`${page.props.auth.user.name} avatar`}
-            className="mr-4 h-8 w-8 rounded-full md:mr-6 md:h-10 md:w-10"
+            className="h-8 w-8 rounded-full md:h-10 md:w-10"
           />
-          <div className="flex-1">
-            <Textarea
-              className="block w-full border px-3 py-2 focus:outline-none"
-              onChange={(value) => form.setData('body', value)}
-              placeholder="Leave a commment"
-              name="reply"
-              rows="4"
-              value={form.data.body}
-            />
-            <div className="mt-4 flex justify-end">
-              <FancyButton type="submit" className="px-3 py-1">
-                Reply
-              </FancyButton>
-            </div>
-          </div>
-        </form>
+          <button className="flex flex-1 border px-4 py-3 text-gray-500 hover:border-gray-500">
+            Leave a reply
+          </button>
+        </div>
       ) : (
+        // <form onSubmit={handleSubmit} className="flex items-start">
+        //   <img
+        //     src={page.props.auth.user.profile_photo_url}
+        //     alt={`${page.props.auth.user.name} avatar`}
+        //     className="mr-4 h-8 w-8 rounded-full md:mr-6 md:h-10 md:w-10"
+        //   />
+        //   <div className="flex-1">
+        //     <Textarea
+        //       className="block w-full border px-3 py-2 focus:outline-none"
+        //       onChange={(value) => form.setData('body', value)}
+        //       placeholder="Leave a commment"
+        //       name="reply"
+        //       rows="4"
+        //       value={form.data.body}
+        //     />
+        //     <div className="mt-4 flex justify-end">
+        //       <FancyButton type="submit" className="px-3 py-1">
+        //         Reply
+        //       </FancyButton>
+        //     </div>
+        //   </div>
+        // </form>
         <div className="flex flex-col items-center justify-between p-6">
           <div className="flex items-center -space-x-2">
             <img

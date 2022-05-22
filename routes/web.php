@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\CreateMediaRequest;
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\CreateReplyRequest;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\MediaResource;
 use App\Http\Resources\PostResource;
@@ -99,10 +99,10 @@ Route::get('/posts/{post:hashid}', fn (Post $post) => inertia('posts/show', [
     'post' => new PostResource($post),
 ]))->name('posts.show');
 
-Route::post('/posts/{post:hashid}/comments', fn (Post $post, CreateCommentRequest $request) => (
+Route::post('/posts/{post:hashid}/replies', fn (Post $post, CreateReplyRequest $request) => (
     tap(back(), fn () => $request->save($post)
 )))
     ->middleware(['auth', 'verified'])
-    ->name('posts.comments.create');
+    ->name('posts.reply');
 
 require __DIR__.'/auth.php';

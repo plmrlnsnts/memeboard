@@ -2,9 +2,8 @@ import axios from 'axios'
 import { useState } from 'react'
 
 const CHUNK_SIZE = 6000000
-const CLOUDINARY_UPLOAD_PRESET = 'memeboard'
-const CLOUDINARY_UPLOAD_API =
-  'https://api.cloudinary.com/v1_1/pmsantos/auto/upload'
+const CLOUDINARY_UPLOAD_PRESET = process.env.MIX_CLOUDINARY_UPLOAD_PRESET
+const CLOUDINARY_UPLOAD_API = process.env.MIX_CLOUDINARY_UPLOAD_API
 
 export default function useUpload() {
   const [processing, setProcessing] = useState(false)

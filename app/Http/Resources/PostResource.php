@@ -24,7 +24,7 @@ class PostResource extends JsonResource
             'replies' => ReplyResource::collection($this->whenLoaded('replies')),
             'links' => [
                 'show' => route('posts.show', $this->hashid),
-                'comment' => route('posts.comments.create', $this->hashid),
+                'reply' => route('posts.reply', $this->hashid),
                 'next' => route('api.posts.next', $this->id),
                 'upvote' => route('api.posts.upvote', $this->id),
                 'downvote' => route('api.posts.downvote', $this->id),

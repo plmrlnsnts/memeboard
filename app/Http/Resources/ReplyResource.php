@@ -11,6 +11,8 @@ class ReplyResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
+            'post_id' => $this->post_id,
+            'parent_id' => $this->parent_id,
             'body' => $this->body,
             'upvotes_count' => $this->upvotes_count,
             'downvotes_count' => $this->downvotes_count,

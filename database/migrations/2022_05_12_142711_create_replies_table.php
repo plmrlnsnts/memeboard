@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('parent_id')->nullable()->constrained('replies')->cascadeOnDelete();
             $table->string('body', 512);
             $table->integer('upvotes_count')->default(0);
             $table->integer('downvotes_count')->default(0);
