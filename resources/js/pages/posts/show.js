@@ -81,7 +81,7 @@ function ReplyForm({ post }) {
         //     </div>
         //   </div>
         // </form>
-        <div className="flex flex-col items-center justify-between p-6">
+        <div className="-mx-4 flex flex-col items-center justify-between border-y px-4 py-6 md:mx-0 md:border md:px-6 md:py-12">
           <div className="flex items-center -space-x-2">
             <img
               className="h-10 w-10 rounded-full border-2 border-white"
