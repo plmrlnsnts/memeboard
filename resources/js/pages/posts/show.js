@@ -59,28 +59,6 @@ function ReplyForm({ post }) {
           </button>
         </div>
       ) : (
-        // <form onSubmit={handleSubmit} className="flex items-start">
-        //   <img
-        //     src={page.props.auth.user.profile_photo_url}
-        //     alt={`${page.props.auth.user.name} avatar`}
-        //     className="mr-4 h-8 w-8 rounded-full md:mr-6 md:h-10 md:w-10"
-        //   />
-        //   <div className="flex-1">
-        //     <Textarea
-        //       className="block w-full border px-3 py-2 focus:outline-none"
-        //       onChange={(value) => form.setData('body', value)}
-        //       placeholder="Leave a commment"
-        //       name="reply"
-        //       rows="4"
-        //       value={form.data.body}
-        //     />
-        //     <div className="mt-4 flex justify-end">
-        //       <FancyButton type="submit" className="px-3 py-1">
-        //         Reply
-        //       </FancyButton>
-        //     </div>
-        //   </div>
-        // </form>
         <div className="-mx-4 flex flex-col items-center justify-between border-y px-4 py-6 md:mx-0 md:border md:px-6 md:py-12">
           <div className="flex items-center -space-x-2">
             <img
